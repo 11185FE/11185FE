@@ -10,4 +10,3 @@ module.exports = (app) => {
 router.all('/page2', (req, res) => {
    res.render('ctrl2/page2')
 })
-

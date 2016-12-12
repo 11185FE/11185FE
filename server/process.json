@@ -1,0 +1,9 @@
+{
+  "apps": [{
+    "name": "fe11185",
+    "script": "app.js",
+    "node_args": "-harmony-async-await",
+    "watch": "./",
+    "log_date_format": "YYYY-MM-DD HH:mm Z",
+  }]
+}

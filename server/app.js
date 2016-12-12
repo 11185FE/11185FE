@@ -8,16 +8,15 @@ const bodyParser = require('body-parser');
 const compress = require('compression');
 const methodOverride = require('method-override');
 const session = require('express-session');
-
+const { port } = require('./config');
 var env = process.env.NODE_ENV || 'production';
-
+const MdsLoader = require("./lib/loader/Mds");
 var app = express();
 
 //view engine
-app.set('port', (process.env.PORT || 80));
+app.set('port', (process.env.PORT || port));
 app.set('views', path.join(__dirname, './views'));
 app.set('view engine', 'ejs');
-
 
 //middlewares
 app.use(logger('dev'));
@@ -34,22 +33,17 @@ app.use(session({
 app.use(compress());
 app.use(methodOverride());
 
-
 //api routes
 var routes = glob.sync('./api/*.js', { cwd: __dirname });
 routes.forEach(function (route) {
   require(route)(app);
 });
 
-
 //pages routes
 var routes = glob.sync('./ctrls/*.js', { cwd: __dirname });
 routes.forEach(function (route) {
   require(route)(app);
 });
-
-
-
 
 //errors
 app.use(function (req, res, next) {
@@ -71,9 +65,6 @@ app.use(function (err, req, res, next) {
   throw err;
 });
 
-
 app.listen(app.get('port'), function () {
   console.log('Express server listening on port ' + app.get('port'));
 });
-
-
