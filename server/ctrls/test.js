@@ -4,12 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const mongoose = require('mongoose');
-
-var Schema = mongoose.Schema;
-var TestObj = mongoose.model('TestObj', new Schema({
-    boom: String,
-    date: Date
-}));
+var TestObj = mongoose.model('TestObj');
 
 
 module.exports = (app) => {
