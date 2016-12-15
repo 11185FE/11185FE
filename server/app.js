@@ -51,6 +51,12 @@ app.set('view engine', 'vue');
 app.use('/assets',express.static(path.join(__dirname, 'views/assets')))
 
 
+//models
+var models = glob.sync('./models/**.js', { cwd: __dirname });
+models.forEach(function (model) {
+  require(model);
+});
+
 //ctrls routes
 var routes = glob.sync('./ctrls/**.js', { cwd: __dirname });
 routes.forEach(function (route) {
