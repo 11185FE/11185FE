@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 const compress = require('compression');
 const methodOverride = require('method-override');
 const session = require('express-session');
-
+const DB = require('./db');
 var env = process.env.NODE_ENV || 'production';
 
 var app = express();
@@ -70,6 +70,8 @@ app.use(function (err, req, res, next) {
   //next(err)
   throw err;
 });
+
+
 
 
 app.listen(app.get('port'), function () {
