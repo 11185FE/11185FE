@@ -4,13 +4,9 @@ const fs = require("fs");
 const path = require("path");
 
 module.exports = (app) => {
-    app.use('/', router);
+    app.use('/demo/demo1', router);
 };
 
-router.all('/', (req, res) => {
-   res.render('index/index')
-})
-
-router.all('/index2', (req, res) => {
-   res.render('index/index2')
+router.all('/func1', (req, res) => {
+   res.send({ddd:2})
 })
