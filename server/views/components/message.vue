@@ -1,6 +1,7 @@
 <template lang="html">
-    <div class="">
-        <h1>{{message}}</h1>
+
+    <div v-show="message" class="alert alert-danger" role="alert">
+        <strong>{{message}}</strong>
     </div>
 </template>
 

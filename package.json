@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nodemon --harmony-async-await index.js"
+    "test": "nodemon --harmony-async-await --debug index.js"
   },
   "engines": {
     "node": "7.0.0",
@@ -29,6 +29,7 @@
     "express-session": "^1.14.2",
     "express-vue": "^3.2.0",
     "glob": "^7.1.1",
+    "md5": "^2.2.1",
     "method-override": "^2.3.7",
     "mongoose": "^4.7.2",
     "morgan": "^1.7.0",

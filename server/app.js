@@ -32,19 +32,19 @@ app.set('view engine', 'vue');
 
 
 //middlewares
-// app.use(logger('dev'));
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({
-//   extended: true
-// }));
-// app.use(cookieParser());
-// app.use(session({
-//   name: 'boomshakalaka',
-//   secret: '233',
-//   cookie: { maxAge: 60*1000*100 }
-// }));
-// app.use(compress());
-// app.use(methodOverride());
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(cookieParser());
+app.use(session({
+  name: 'boomshakalaka',
+  secret: '233',
+  cookie: { maxAge: 60*1000*100 }
+}));
+app.use(compress());
+app.use(methodOverride());
 
 
 //assets
