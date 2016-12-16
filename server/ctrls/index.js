@@ -5,9 +5,16 @@ const path = require("path");
 
 
 module.exports = (app) => {
-    app.use('/demo/demo1', router);
+    app.use('/', router);
 };
 
-router.all('/func1', (req, res) => {
-   res.send({ddd:2})
+
+router.all('/', async (req, res) => {
+
+    //渲染
+    res.render('index', {
+        data: {
+        }
+    });
+    
 })
