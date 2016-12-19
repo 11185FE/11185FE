@@ -1,5 +1,12 @@
-<template>
-    <form action="/user/add" method="post">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+       <common-meta></common-meta>
+</head>
+<body>
+        <form action="/user/add" method="post">
         <div class="form-group">
             <label for="">username</label>
             <input type="text" name="username" v-model="username" class="form-control">
@@ -17,26 +24,5 @@
 
     </form>
 
-</template>
-
-<script>
-export default{
-    data(){
-        return{
-            username:"",
-          pw:"",
-          pwAgain:""
-        }
-    },
-    methods:{
-        submit(e){
-            if(!this.pw||!this.username){
-                e.preventDefault();
-            }
-            if(this.pw!=this.pwAgain){
-                e.preventDefault();
-            }
-        }
-    }
-}
-</script>
+</body>
+</html>

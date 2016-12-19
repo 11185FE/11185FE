@@ -49,10 +49,8 @@ router.get('/login', (req, res) => {
     res.render('user/login', {
         data: {
             message: req.session.message || ""
-        },
-        vue: {
-            components: ['message']
         }
+
     })
 });
 

@@ -1,3 +1,4 @@
 {
-     "ext": "js json vue"
+     "ext": "js,json",
+     "ignore":["node_modules/*",".git/*","server/views/*"]
 }

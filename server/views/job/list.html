@@ -1,12 +1,19 @@
-<template>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+       <common-meta></common-meta>
+</head>
+<body>
     <div style="padding-top:10px;">
         <a href="add" class="btn btn-primary">new 锅</a>
         <div v-for="job in jobs" class="card" style="width:40rem;margin:1rem auto">
         <div class="card-block">
             <h4 class="card-title">{{job.name}}</h4>
             <p class="card-text">{{job.desc}}</p>
-            <p class="card-text">needDoneDate:{{job.needDoneDate}}</p>
-            <p class="card-text" v-show="job.doneDate">done:{{job.doneDate}}</p>
+            <p class="card-text">needDoneDate:{{new Date(job.needDoneDate).toLocaleDateString() }}</p>
+            <p class="card-text" v-show="job.doneDate">done:{{new Date(job.doneDate).toLocaleDateString() }}</p>
         </div>
 
         <ul v-for="teamer in job.teamers" class="list-group list-group-flush">
@@ -18,12 +25,6 @@
         </div>
         </div>
 
-</div>
-</template>
-<script>
-    export default {
-        data() {
-            return {}
-        }
-    }
-</script>
+    </div>
+</body>
+</html>

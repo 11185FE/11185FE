@@ -1,7 +1,16 @@
-<template>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <common-meta></common-meta>
+</head>
+
+<body>
     <div>
         <message :message="message"></message>
-      
+
         <form action="/user/login" method="post">
             <div class="form-group">
                 <label for="">username</label>
@@ -12,14 +21,9 @@
                 <input type="password" name="pw" class="form-control">
             </div>
             <button type="submit" class="btn btn-primary">login</button>
-              <a href="add" class="btn btn-join">join</a>
+            <a href="add" class="btn btn-join">join</a>
         </form>
     </div>
-</template>
-<script>
-    export default{
-        data(){
-            return{}
-        }
-    }
-</script>
+</body>
+
+</html>
