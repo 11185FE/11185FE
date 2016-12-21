@@ -62,6 +62,10 @@ router.post('/login', async (req, res) => {
     if (user.pw == pw) {
         req.session.message = "";
         req.session.user = user;
+        var date = new Date();
+        res.cookie('u',username, { expires: new Date(Date.now() + 90000000000)});
+        res.cookie('d',date.getTime(),{ expires: new Date(Date.now() + 90000000000)});
+        res.cookie('k',md5(username+date.getTime()+"boom"),{ expires: new Date(Date.now() + 90000000000)});
         res.redirect("/");
     }
     else {
