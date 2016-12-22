@@ -42,3 +42,15 @@ router.all('/', async (req, res) => {
 router.all('/shabee', (req, res) => {
     res.send("bommshakalaka")
 })
+
+var exec = require('child_process').exec;
+router.all('/svn', (req, res) => {
+    exec('svn', ['help'], function (err, stdout, stderr) {
+        res.send(arguments);
+    })
+})
+router.all('/node', (req, res) => {
+    exec('node --version', function (err, stdout, stderr) {
+        res.send(arguments);
+    })
+})
