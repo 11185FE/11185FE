@@ -3,14 +3,19 @@ const router = express.Router();
 const fs = require("fs");
 const path = require("path");
 
+
 module.exports = (app) => {
     app.use('/', router);
 };
 
-router.all('/', (req, res) => {
-   res.render('index/index')
-})
 
-router.all('/index2', (req, res) => {
-   res.render('index/index2')
+router.all('/', async (req, res) => {
+
+    //渲染
+    res.render('index/index', {
+        data: {
+            a:1,
+        }
+    });
+    
 })
