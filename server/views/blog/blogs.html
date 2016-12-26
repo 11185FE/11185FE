@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>{{tag}}</title>
+  <common-meta></common-meta>
+</head>
+
+<body>
+  <div class="container">
+    <div class="list-group">
+        <a
+          v-for="mdInfo in mdsInfo"
+          v-bind:href="'/blog/' + tag + '/' + mdInfo.name"
+          class="list-group-item"
+        >
+        {{mdInfo.name}}
+      </a>
+    </div>
+  </div>
+</body>
+</html>
