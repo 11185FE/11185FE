@@ -18,12 +18,10 @@ class MdsLoader extends Unit {
       parse.on('entry', entry => {
         if (entry.type == 'File') {
           const pathArr = entry.path.split('/');
-          const tag = pathArr[1];
           const path = entry.path.replace(pathArr[0], '');
           const name = pathArr[pathArr.length - 1].replace('.md', '');
           if(!mdsInfo.hasOwnProperty(path)) {
             mdsInfo[path] = {
-              tag,
               path,
               name,
               mds: '',

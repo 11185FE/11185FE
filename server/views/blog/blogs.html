@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>{{tag}}</title>
+  <title>{{title}}</title>
   <common-meta></common-meta>
 </head>
 
@@ -11,11 +11,11 @@
   <div class="container">
     <div class="list-group">
         <a
-          v-for="mdInfo in mdsInfo"
-          v-bind:href="'/blog/' + tag + '/' + mdInfo.name"
+          v-for="blog in blogs"
+          v-bind:href="'/blog/' + blog.title"
           class="list-group-item"
         >
-        {{mdInfo.name}}
+        {{blog.title}}
       </a>
     </div>
   </div>

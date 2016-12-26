@@ -3,12 +3,25 @@
 
 <head>
   <meta charset="UTF-8">
-  <title>{{mdInfo.name}}</title>
+  <title>{{blog.title}}</title>
   <common-meta></common-meta>
 </head>
 
 <body>
-<div class="container" v-html="mdInfo.mds">
+  <div class="container">
+    <h1>{{blog.title}}</h1>
+    <div class="tags">
+      Tags:
+      <a
+        v-for="tag in blog.tags"
+        v-bind:href="'/blog/tag/' + tag"
+        class="label label-default"
+      >
+        {{tag}}
+      </a>
+    </div>
+    <p class="text-muted">Date: {{blog.date}}</p>
+    <div v-html="blog.source"></div>
   </div>
 </body>
 </html>

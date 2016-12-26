@@ -17,10 +17,11 @@ module.exports = async (app) => {
 };
 
 router.get('/', async (req, res) => {
-  const tags = await Blog.distinct('tag');
-  res.render('blog/tags', {
+  const blogs = await Blog.find();
+  res.render('blog/blogs', {
     data: {
-      tags,
+      blogs,
+      title: '博客列表',
     }
   });
 });
@@ -37,29 +38,31 @@ router.all('/update', async (req, res) => {
   }
 });
 
-router.get('/:tag/', async (req, res) => {
-  const tag = req.params.tag;
-  const mdsInfo = await Blog.find({tag});
-  res.render('blog/blogs', {
-    data: {
-      tag,
-      mdsInfo,
-    }
-  });
-});
-
-router.get('/:tag/:name', async (req, res) => {
-  const tag = req.params.tag;
-  const name = req.params.name;
-  const mdInfo = await Blog.findOne({tag, name});
-  mdInfo.mds = md.render(mdInfo.mds);
+router.get('/:title', async (req, res) => {
+  const title = req.params.title;
+  const blog = await Blog.findOne({title});
+  blog.source = md.render(blog.source);
   res.render('blog/blog', {
     data: {
-      mdInfo
+      blog
     }
   });
 });
 
+router.get('/tag/:tag', async (req, res) => {
+  const tag = req.params.tag;
+  const blogs = await Blog.find({
+    tags: {'$in': [tag]},
+  });
+  res.render('blog/blogs', {
+    data: {
+      blogs,
+      title: tag,
+    }
+  });
+});
+
+// 存储博客内容
 function setMdsInfo() {
   return new Promise(async (resolve, reject) => {
     try {
@@ -69,8 +72,16 @@ function setMdsInfo() {
       for( let key in mdsInfo) {
         if(mdsInfo.hasOwnProperty(key)) {
           const mdInfo = mdsInfo[key];
-          mdInfo.updateDate = new Date();
-          await Blog.update({path: mdInfo.path}, mdInfo, {upsert: true}, err => {
+          const { title, date, tags, source } = parseSourceContent(mdInfo.mds);
+          await Blog.update({
+            path: mdInfo.path
+          }, {
+            date,
+            tags,
+            title,
+            source,
+            path: mdInfo.path,
+          }, {upsert: true}, err => {
             if(err) {
               msg = err;
               status = -1;
@@ -91,3 +102,29 @@ function setMdsInfo() {
     }
   });
 };
+
+// 解析文章内容
+function parseSourceContent (data){
+  let info = {
+    title:'',
+    tags: '',
+    date: new Date(),
+  };
+  const reg = /(^---\n)([^.])*(---\n)/;
+  let str = data.match(reg); // 获取文本元数据
+  if(str){
+    data = data.replace(str[0],'').trim(); // 获取文本内容
+    str = str[0].replace(/---\n/g, '').trim();
+    str.split('\n').map( line => {
+      let i = line.indexOf(':');
+      if( i !== -1) {
+        const name = line.slice(0, i).trim();
+        const value = line.slice( i + 1).trim();
+        info[name] = value;
+      }
+    });
+  }
+  info.tags = info.tags.replace(/\[|\]/g,'').split(',');
+  info.source = data;
+  return info;
+}
