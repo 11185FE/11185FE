@@ -17,6 +17,7 @@ router.all('*', async (req, res,next) => {
     var k = req.cookies["k"];
     var passDate = new Date(parseInt(d))
     passDate.setDate(360)
+
     if(k==md5(u+d+"boom")&&new Date()<passDate){
         var user = await User.findOne({ username:u });
          req.session.user = user;
@@ -27,7 +28,7 @@ router.all('*', async (req, res,next) => {
         next()
     }
     else{
-        if(/user\/(login|add)/.test(req.url)){
+        if(/user\/(login|add)|blog/.test(req.url)){
             next();
         }
         // else if(/job\/(list)/.test(req.url)){
@@ -36,8 +37,8 @@ router.all('*', async (req, res,next) => {
         else{
             res.redirect("/user/login");
         }
-       
+
     }
-    
-    
+
+
 })

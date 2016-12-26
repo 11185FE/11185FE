@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
   });
 });
 
-router.post('/update', async (req, res) => {
+router.all('/update', async (req, res) => {
   const data = await setMdsInfo();
   if(data.status === 1) {
     console.log('Mds loaded');
