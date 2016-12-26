@@ -2,9 +2,8 @@ const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var Blog = mongoose.model('Blog', new Schema({
-  title: String,
+  name: String,
   path: String,
-  date: String,
   tags: Array,
   source: String,
   creatdDate: {type:Date,default:Date.now},

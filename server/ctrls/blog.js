@@ -38,9 +38,9 @@ router.all('/update', async (req, res) => {
   }
 });
 
-router.get('/:title', async (req, res) => {
-  const title = req.params.title;
-  const blog = await Blog.findOne({title});
+router.get('/:name', async (req, res) => {
+  const name = req.params.name;
+  const blog = await Blog.findOne({name});
   blog.source = md.render(blog.source);
   res.render('blog/blog', {
     data: {
@@ -72,14 +72,13 @@ function setMdsInfo() {
       for( let key in mdsInfo) {
         if(mdsInfo.hasOwnProperty(key)) {
           const mdInfo = mdsInfo[key];
-          const { title, date, tags, source } = parseSourceContent(mdInfo.mds);
+          const { tags, source } = parseSourceContent(mdInfo.mds);
           await Blog.update({
             path: mdInfo.path
           }, {
-            date,
             tags,
-            title,
             source,
+            name: mdInfo.name,
             path: mdInfo.path,
           }, {upsert: true}, err => {
             if(err) {
@@ -106,25 +105,29 @@ function setMdsInfo() {
 // 解析文章内容
 function parseSourceContent (data){
   let info = {
-    title:'',
     tags: '',
-    date: new Date(),
   };
-  const reg = /(^---\n)([^.])*(---\n)/;
-  let str = data.match(reg); // 获取文本元数据
-  if(str){
-    data = data.replace(str[0],'').trim(); // 获取文本内容
-    str = str[0].replace(/---\n/g, '').trim();
-    str.split('\n').map( line => {
-      let i = line.indexOf(':');
-      if( i !== -1) {
-        const name = line.slice(0, i).trim();
-        const value = line.slice( i + 1).trim();
-        info[name] = value;
-      }
-    });
+  const tagReg =  /(tags)(.)*/;
+  let tagStr = data.match(tagReg); // 获取标签数据
+  if(tagStr) {
+    tagStr = tagStr[0];
+    let i = tagStr.indexOf(':');
+    if( i !== -1) {
+      const name = tagStr.slice(0, i).trim();
+      const value = tagStr.slice( i + 1).replace(/(^\s*)|(\s*$)/g,'');
+      info[name] = value;
+    }
   }
-  info.tags = info.tags.replace(/\[|\]/g,'').split(',');
+  info.tags = info.tags.split(',');
+  if(info.tags.length) {
+    let i = 0;
+    let link = 'tags: ';
+    while(i < info.tags.length) {
+      link += `[${info.tags[i]}](/blog/tag/${info.tags[i]}) `;
+      i++;
+    }
+    data = data.replace(tagReg, link + '\n');
+  }
   info.source = data;
   return info;
 }

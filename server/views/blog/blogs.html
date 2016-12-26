@@ -12,10 +12,10 @@
     <div class="list-group">
         <a
           v-for="blog in blogs"
-          v-bind:href="'/blog/' + blog.title"
+          v-bind:href="'/blog/' + blog.name"
           class="list-group-item"
         >
-        {{blog.title}}
+        {{blog.name}}
       </a>
     </div>
   </div>
