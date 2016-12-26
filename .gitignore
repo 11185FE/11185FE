@@ -1,6 +1,8 @@
 node_modules
+.jsbeautifyrc
 npm-debug.log
 yarn.lock
 *.env
 .vscode
 yarn-error.log
+.eslintrc
