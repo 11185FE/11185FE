@@ -26,6 +26,7 @@ router.get('/', async (req, res) => {
 });
 
 router.all('/update', async (req, res) => {
+  const result = await Blog.remove();
   const data = await setMdsInfo();
   if(data.status === 1) {
     console.log('Mds loaded');
