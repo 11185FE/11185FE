@@ -11,30 +11,30 @@ module.exports = (app) => {
 var User = mongoose.model('User');
 
 
-router.all('*', async (req, res,next) => {
+router.all('*', async (req, res, next) => {
     var u = req.cookies["u"];
     var d = req.cookies["d"];
     var k = req.cookies["k"];
     var passDate = new Date(parseInt(d))
     passDate.setDate(360)
 
-    if(k==md5(u+d+"boom")&&new Date()<passDate){
-        var user = await User.findOne({ username:u });
-         req.session.user = user;
+    if (k == md5(u + d + "boom") && new Date() < passDate) {
+        var user = await User.findOne({ username: u });
+        req.session.user = user;
         next()
     }
 
-    else if(req.session.user){
+    else if (req.session.user) {
         next()
     }
-    else{
-        if(/user\/(login|add)|blog/.test(req.url)){
+    else {
+        if (/user\/(login|add)|blog/.test(req.url)) {
             next();
         }
-        // else if(/job\/(list)/.test(req.url)){
-        //     next();
-        // }
-        else{
+        else if (/job\/(reload)/.test(req.url)) {
+            next();
+        }
+        else {
             res.redirect("/user/login");
         }
 
