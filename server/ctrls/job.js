@@ -16,10 +16,7 @@ const md = new MarkdownIt({
 var projects = [];
 module.exports = async (app) => {
     app.use('/job', router);
-    projects = await FrontLoader.getInfo();
-    for (let i in projects) {
-        projects[i].readme = md.render(projects[i].readme);
-    }
+    await reload();
 };
 
 router.all('/', (req, res) => {
@@ -43,7 +40,7 @@ router.all('/:title', (req, res) => {
     const title = req.params.title;
     var project = null;
     for (let i in projects) {
-        if (projects[i].title = title) {
+        if (projects[i].title == title) {
             project = projects[i];
             break;
         }
@@ -55,3 +52,18 @@ router.all('/:title', (req, res) => {
     })
 
 })
+
+
+router.all('/reload', async (req, res) => {
+    await reload();
+    res.send("call success")
+
+})
+
+
+var reload = async function () {
+    projects = await FrontLoader.getInfo();
+    for (let i in projects) {
+        projects[i].readme = md.render(projects[i].readme);
+    }
+}
