@@ -36,6 +36,14 @@ router.all('/list', async (req, res) => {
     })
 })
 
+router.all('/reload', async (req, res) => {
+    await reload();
+    res.send("success")
+
+})
+
+
+
 router.all('/:title', (req, res) => {
     const title = req.params.title;
     var project = null;
@@ -54,11 +62,6 @@ router.all('/:title', (req, res) => {
 })
 
 
-router.all('/reload', async (req, res) => {
-    await reload();
-    res.send("call success")
-
-})
 
 
 var reload = async function () {
