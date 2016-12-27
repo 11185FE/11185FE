@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
     var pw = md5(req.body.pw||233);
     var user = await User.findOne({ username });
 
-    if (user.pw == pw) {
+    if (user && user.pw == pw) {
         req.session.message = "";
         req.session.user = user;
         var date = new Date();

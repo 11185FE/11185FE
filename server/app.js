@@ -11,7 +11,7 @@ const methodOverride = require('method-override');
 const session = require('express-session');
 const Vue = require('vue');
 const renderer = require('vue-server-renderer').createRenderer()
-
+const MdsLoader = require('./libs/loader/Mds');
 const DB = require('./db');
 var env = process.env.NODE_ENV || 'production';
 var app = express();
@@ -107,5 +107,3 @@ app.use(function (err, req, res, next) {
 app.listen(app.get('port'), function () {
     console.log('Express server listening on port ' + app.get('port'));
 });
-
-
