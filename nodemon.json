@@ -1,4 +1,4 @@
 {
      "ext": "js,json",
-     "ignore":["node_modules/*",".git/*","server/views/*"]
+     "ignore":["node_modules/*",".git/*","server/views/*","data/*"]
 }

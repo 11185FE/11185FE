@@ -3,8 +3,8 @@ const router = express.Router();
 const fs = require("fs");
 const path = require("path");
 const mongoose = require('mongoose');
-
-
+const superagent = require('superagent')
+const targz = require('tar.gz')
 var Job = mongoose.model('Job');
 
 
@@ -12,6 +12,28 @@ module.exports = (app) => {
     app.use('/job', router);
 };
 
+
+router.all('/test', async (req, res) => {
+    var url = "https://api.github.com/repos/11185FE/front/tarball/master";
+    var read = superagent.get(url);
+    var parse = targz().createParseStream();
+    var mds = [];
+    parse.on('entry', function (entry) {
+        if (entry.type == 'File') {
+            entry.on('data', function (a) {
+                mds.push(a.toString())
+            })
+        }
+    });
+    parse.on('error', function (e) {
+        res.send(e)
+    })
+    parse.on('end', function () {
+        res.send(mds.join(""));
+    });
+    read.pipe(parse);
+
+})
 
 router.all('/list', async (req, res) => {
 
@@ -69,8 +91,8 @@ router.all('/done', async (req, res) => {
 router.get('/edit', async (req, res) => {
     var id = req.query.id;
     var job = await Job.findById(id);
-    res.render('job/edit',{
-        data:{
+    res.render('job/edit', {
+        data: {
             job
         }
     })
@@ -79,10 +101,10 @@ router.get('/edit', async (req, res) => {
 router.post('/edit', async (req, res) => {
     var id = req.query.id;
     var job = await Job.findById(id);
-    job.name=req.body.name;
-    job.desc=req.body.desc;
-    job.needDoneDate=req.body.needDoneDate;
-    job.doneDate=null;
+    job.name = req.body.name;
+    job.desc = req.body.desc;
+    job.needDoneDate = req.body.needDoneDate;
+    job.doneDate = null;
     await job.save();
     res.redirect("list");
 });
