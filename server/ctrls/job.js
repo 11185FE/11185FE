@@ -26,7 +26,7 @@ router.all('/', (req, res) => {
 router.all('/list', async (req, res) => {
 
     projects.sort(function (a, b) {
-        return a.editDate < b.editDate;
+        return a.editDate > b.editDate;
 
     })
     res.render('job/list', {
