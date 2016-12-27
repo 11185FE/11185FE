@@ -16,8 +16,12 @@ class FrontLoader extends Unit {
       const projects = [];
       parse.on('entry', entry => {
         if (entry.type == 'File' && /readme/i.test(entry.path)) {
+          var readme = "";
           entry.on('data', data => {
-            var readme = data.toString();
+            readme += data.toString();
+
+          })
+          entry.on('end', () => {
             var title = readme.match(/^#(.*)\n/);
             title = title && title[1].trim();
             var needDoneDate = readme.match(/截止日期[:：]([\d- ]*)\n/);
@@ -29,10 +33,10 @@ class FrontLoader extends Unit {
             var teamers = readme.match(/参与人员[:：](.*) *\n/);
             teamers = teamers && teamers[1];
             var splitor = /\,/.test(teamers) ? "," : " "
-            teamers = teamers && teamers.split(splitor);
+            teamers = teamers && teamers.trim().split(splitor);
             var path = entry.path;
-            var project = { title,path, needDoneDate, editDate, progress, teamers, readme };
-           title && projects.push(project)
+            var project = { title, path, needDoneDate, editDate, progress, teamers, readme };
+            title && projects.push(project)
           })
         }
       });
@@ -46,7 +50,7 @@ class FrontLoader extends Unit {
     })
   }
 
- 
+
 }
 
 module.exports = new FrontLoader();

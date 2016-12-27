@@ -25,10 +25,7 @@ router.all('/', (req, res) => {
 
 router.all('/list', async (req, res) => {
 
-    projects.sort(function (a, b) {
-        return a.editDate > b.editDate;
 
-    })
     res.render('job/list', {
         data: {
             jobs: projects
@@ -42,6 +39,24 @@ router.all('/reload', async (req, res) => {
 
 })
 
+router.all('/week',(req,res)=>{
+    var weekProjects=[];
+    var now = new Date();
+    var startDate = new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()+1);
+    var toDate = new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()+8);
+    for(let i in projects){
+        if(projects[i].editDate>=startDate&&projects[i].editDate<toDate){
+            weekProjects.push(projects[i])
+        }
+    }
+
+    res.render('job/list',{
+        data:{
+           jobs: weekProjects
+        }
+    })
+
+})
 
 
 router.all('/:title', (req, res) => {
@@ -69,4 +84,8 @@ var reload = async function () {
     for (let i in projects) {
         projects[i].readme = md.render(projects[i].readme);
     }
+    projects.sort(function (a, b) {
+        return b.editDate - a.editDate;
+
+    })
 }
