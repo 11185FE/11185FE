@@ -13,31 +13,28 @@
     <div class="container">
         <form action="">
             <div class="form-group">
-                <a href="add" class="btn btn-primary">ADD</a>
-            </div>
-            <div class="form-group">
                 <input id="search" type="text" class="form-control" placeholder="search">
             </div>
         </form>
 
-        <p>sort: top to bottom and left to right</p>
-        <div class="card-columns">
-            <div class="card" v-for="job in jobs">
+        <div>
+            <div  class="card" v-for="job in jobs">
                 <div class="card-block">
-                    <h3 class="card-title">{{job.name}}</h3>
-                    <p class="card-text">{{job.desc}}</p>
-                    <p class="card-text"><small>截止日期:{{job.needDoneDate }}</small></p>
-                    <p class="card-text" v-show="job.doneDate"><small>完成日期:{{job.doneDate }}</small></p>
+                    <a :href="job.title">
+                        <h3 class="card-title">
+                        {{job.title}}
+                        </h3>
+                    </a>
+                    <p class="card-text" v-if="job.path"><small>项目路径:{{job.path }}</small></p>
+                    <p class="card-text" v-if="job.needDoneDate"><small>截止日期:{{job.needDoneDate }}</small></p>
+                    <p class="card-text" v-if="job.editDate"><small>修改日期:{{job.editDate }}</small></p>
+                    <p class="card-text" v-if="job.progress"><small>进度:{{job.progress*100+"%"}}</small></p>
+                    <progress class="progress progress-info" :value="job.progress*100" max="100"></progress>
                 </div>
-
                 <ul class="list-group list-group-flush">
                     <li v-for="teamer in job.teamers" class="list-group-item">{{teamer}}</li>
                 </ul>
-                <div class="card-block">
-                    <a v-show="!job.doneDate&&!job.teamers.includes(username)" :href="`join?id=${job._id}`" class="card-link">{{job.teamers.length?'加入':'接锅'}}</a>
-                    <a v-show="!job.doneDate&&username" :href="`done?id=${job._id}`" class="card-link" v-show="job.teamers.includes(username)">done</a>
-                    <!--<a v-show="username" :href="'edit?id='+job._id" class="card-link">修改</a>-->
-                </div>
+           
 
             </div>
         </div>

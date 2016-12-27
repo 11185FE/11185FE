@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 const cheerio = require('cheerio');
-const fs = require('fs-extra');
+// const fs = require('fs-extra');
 
 class Unit {
   constructor() {
