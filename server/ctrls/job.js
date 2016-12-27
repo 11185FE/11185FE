@@ -5,109 +5,53 @@ const path = require("path");
 const mongoose = require('mongoose');
 const superagent = require('superagent')
 const targz = require('tar.gz')
-var Job = mongoose.model('Job');
+const Job = mongoose.model('Job');
+const { FrontLoader } = require('../libs/Loader');
+const MarkdownIt = require('markdown-it');
 
-
-module.exports = (app) => {
+const md = new MarkdownIt({
+    html: true,
+    langPrefix: 'language-',
+});
+var projects = [];
+module.exports = async (app) => {
     app.use('/job', router);
+    projects = await FrontLoader.getInfo();
+    for (let i in projects) {
+        projects[i].readme = md.render(projects[i].readme);
+    }
 };
 
-
-router.all('/test', async (req, res) => {
-    var url = "https://api.github.com/repos/11185FE/front/tarball/master";
-    var read = superagent.get(url);
-    var parse = targz().createParseStream();
-    var mds = [];
-    parse.on('entry', function (entry) {
-        if (entry.type == 'File') {
-            entry.on('data', function (a) {
-                mds.push(a.toString())
-            })
-        }
-    });
-    parse.on('error', function (e) {
-        res.send(e)
-    })
-    parse.on('end', function () {
-        res.send(mds.join(""));
-    });
-    read.pipe(parse);
-
+router.all('/', (req, res) => {
+    res.redirect('list');
 })
 
 router.all('/list', async (req, res) => {
 
-    var jobs = await Job.find({}).sort({ needDoneDate: -1 });
+    projects.sort(function (a, b) {
+        return a.editDate < b.editDate;
 
-
-    var username = req.session.user ? req.session.user.username : "";
+    })
     res.render('job/list', {
         data: {
-            username,
-            jobs,
-
+            jobs: projects
         }
-    });
+    })
 })
 
-
-router.get('/add', async (req, res) => {
-    // await Job.remove({})
-    res.render('job/add', {
-        data: {}
-    })
-});
-
-router.post('/add', async (req, res) => {
-
-    var job = new Job(req.body);
-    await job.save();
-    res.redirect("list");
-});
-
-router.all('/join', async (req, res) => {
-    var id = req.query.id;
-    var job = await Job.findById(id);
-    job.teamers = job.teamers || [];
-    if (job.teamers.includes(req.session.user.username)) {
-        res.redirect("list");
-        return;
+router.all('/:title', (req, res) => {
+    const title = req.params.title;
+    var project = null;
+    for (let i in projects) {
+        if (projects[i].title = title) {
+            project = projects[i];
+            break;
+        }
     }
-
-    job.teamers.push(req.session.user.username);
-    await job.save();
-    res.redirect("list");
-})
-
-router.all('/done', async (req, res) => {
-    var id = req.query.id;
-    var job = await Job.findById(id);
-    job.doneDate = new Date();
-    job.save();
-    res.redirect("list");
-
-})
-
-router.get('/edit', async (req, res) => {
-    var id = req.query.id;
-    var job = await Job.findById(id);
-    res.render('job/edit', {
+    res.render('job/job', {
         data: {
-            job
+            job: project
         }
     })
+
 })
-
-router.post('/edit', async (req, res) => {
-    var id = req.query.id;
-    var job = await Job.findById(id);
-    job.name = req.body.name;
-    job.desc = req.body.desc;
-    job.needDoneDate = req.body.needDoneDate;
-    job.doneDate = null;
-    await job.save();
-    res.redirect("list");
-});
-
-
-

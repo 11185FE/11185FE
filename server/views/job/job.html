@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <common-meta></common-meta>
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="card-block">
+                <h3 class="card-title">
+                    {{job.title}}
+                </h3>
+                <p class="card-text" v-if="job.path"><small>项目路径:{{job.path }}</small></p>
+                <p class="card-text" v-if="job.needDoneDate"><small>截止日期:{{job.needDoneDate }}</small></p>
+                <p class="card-text" v-if="job.editDate"><small>修改日期:{{job.editDate }}</small></p>
+                <p class="card-text" v-if="job.progress"><small>进度:{{job.progress*100+"%"}}</small></p>
+                <progress class="progress progress-info" :value="job.progress*100" max="100"></progress>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li v-for="teamer in job.teamers" class="list-group-item">{{teamer}}</li>
+            </ul>
+            <div class="readme card-block"  v-html="job.readme"></div>
+        </div>
+    </div>
+</body>
+
+</html>
