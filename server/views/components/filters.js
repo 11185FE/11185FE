@@ -1,6 +1,6 @@
 const Vue = require('vue');
 Vue.filter('date', function (value, format) {
-    console.info(value);
+
     var fmt = format;
     var obj = null;
     if (typeof value == "string") {

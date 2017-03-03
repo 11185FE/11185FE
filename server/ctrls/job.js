@@ -48,7 +48,6 @@ router.all('/week', (req, res) => {
 
         project.logs.forEach(log=>{
             log.text= md.render(log.text)
-            console.info(2333);
         })
         
     })
