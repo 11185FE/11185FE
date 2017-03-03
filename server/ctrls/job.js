@@ -5,7 +5,7 @@ const path = require("path");
 const mongoose = require('mongoose');
 const superagent = require('superagent')
 const targz = require('tar.gz')
-const { FrontLoader } = require('../libs/Loader');
+const { FrontLoader } = require('../libs/loader');
 const MarkdownIt = require('markdown-it');
 
 const md = new MarkdownIt({
