@@ -26,7 +26,6 @@
                         </h3>
                     </a>
                     <p class="card-text" v-if="job.path"><small>项目路径:{{job.path }}</small></p>
-                    <p class="card-text" v-if="job.needDoneDate"><small>截止日期:{{job.needDoneDate | date('yyyy-MM-dd') }}</small></p>
                     <p class="card-text" v-if="job.editDate"><small>修改日期:{{job.editDate | date('yyyy-MM-dd')}}</small></p>
                     <p class="card-text" v-if="job.progress"><small>进度:{{job.progress*100+"%"}}</small></p>
                     <progress class="progress progress-info" :value="job.progress*100" max="100"></progress>

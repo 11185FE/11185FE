@@ -35,7 +35,6 @@ app.use(methodOverride());
 
 
 
-
 //comps
 var comps = glob.sync('./views/components/*.js', { cwd: __dirname });
 comps.forEach(function (comp) {

@@ -1,11 +1,10 @@
-const Unit = require('../Unit');
+
 const { mdsUrl } = require('../../config/');
 const targz = require('tar.gz');
 const superagent = require('superagent');
 
-class MdsLoader extends Unit {
+class MdsLoader {
   constructor() {
-    super();
     this.getMdsInfo = this.getMdsInfo.bind(this);
   }
 
