@@ -1,3 +1,3 @@
-exports.MdsLoder = require('./loader/Mds');
-exports.FrontLoader = require('./loader/Front');
+exports.MdsLoder = require('./loader/mds');
+exports.FrontLoader = require('./loader/front');
 
