@@ -5,7 +5,6 @@ const path = require("path");
 const mongoose = require('mongoose');
 const superagent = require('superagent')
 const targz = require('tar.gz')
-const Job = mongoose.model('Job');
 const { FrontLoader } = require('../libs/Loader');
 const MarkdownIt = require('markdown-it');
 
@@ -24,8 +23,6 @@ router.all('/', (req, res) => {
 })
 
 router.all('/list', async (req, res) => {
-
-
     res.render('job/list', {
         data: {
             jobs: projects
@@ -33,28 +30,40 @@ router.all('/list', async (req, res) => {
     })
 })
 
-router.all('/reload', async (req, res) => {
-    await reload();
-    res.send("success")
-
-})
-
-router.all('/week',(req,res)=>{
-    var weekProjects=[];
+router.all('/week', (req, res) => {
+    var weekProjects = [];
     var now = new Date();
-    var startDate = new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()+1);
-    var toDate = new Date(now.getFullYear(),now.getMonth(),now.getDate()-now.getDay()+8);
-    for(let i in projects){
-        if(projects[i].editDate>=startDate&&projects[i].editDate<toDate){
+    var startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 1);
+    var toDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 8);
+    for (let i in projects) {
+        if (projects[i].editDate >= startDate && projects[i].editDate < toDate) {
             weekProjects.push(projects[i])
         }
     }
 
-    res.render('job/list',{
-        data:{
-           jobs: weekProjects
+    weekProjects.forEach(project => {
+        project.logs = project.logs  && project.logs.filter(log=>{
+            return log.date>=startDate&&log.date<toDate;
+        })
+
+        project.logs.forEach(log=>{
+            log.text= md.render(log.text)
+            console.info(2333);
+        })
+        
+    })
+
+    res.render('job/week', {
+        data: {
+            jobs: weekProjects
         }
     })
+})
+
+
+router.all('/reload', async (req, res) => {
+    await reload();
+    res.send("success")
 
 })
 
@@ -77,8 +86,6 @@ router.all('/:title', (req, res) => {
 })
 
 
-
-
 var reload = async function () {
     projects = await FrontLoader.getInfo();
     for (let i in projects) {
@@ -86,6 +93,5 @@ var reload = async function () {
     }
     projects.sort(function (a, b) {
         return b.editDate - a.editDate;
-
     })
 }

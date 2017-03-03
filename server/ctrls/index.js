@@ -10,19 +10,10 @@ module.exports = (app) => {
 
 
 router.all('/', async (req, res) => {
-
-    //渲染
     res.render('index/index', {
         data: {
             a: 1,
         }
     });
-
 })
 
-
-router.all('/test', async (req, res) => {
- 
-
-
-})
