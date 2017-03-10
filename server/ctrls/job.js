@@ -76,11 +76,14 @@ router.all('/week-text', (req, res) => {
         project.logs = project.logs && project.logs.filter(log => {
             return log.date >= startDate && log.date < toDate;
         })
-
         project.logs.forEach(log => {
             log.text = log.text.trim();
         })
 
+    })
+
+    weekProjects.sort((p1, p2) => {
+        return p1.title > p2.title ? 1 : -1;
     })
 
     res.render('job/week-text', {
