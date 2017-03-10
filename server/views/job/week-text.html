@@ -10,16 +10,17 @@
 
 <body>
     <div class="container">
+        <h3>前端周报{{(new Date()).toLocaleDateString()}}</h3>
+        <hr>
         <div v-for="job in jobs">
             <b>【{{job.title}}】</b>
             <small>进度:{{job.progress*100+"%"}}</small>
             <small>参与人员:{{job.teamers.join(" ")}}</small>
-
             <pre v-for="log in job.logs" v-html="log.text"></pre>
             <br>
             <br>
-
         </div>
+        <small>备注:带'页面'的项目为静态页面项目,其余为'前后端分离'的前端开发项目。</small>
     </div>
 </body>
 
