@@ -30,6 +30,8 @@ router.all('/list', async (req, res) => {
     })
 })
 
+
+
 router.all('/week', (req, res) => {
     var weekProjects = [];
     var now = new Date();
@@ -42,14 +44,14 @@ router.all('/week', (req, res) => {
     }
 
     weekProjects.forEach(project => {
-        project.logs = project.logs  && project.logs.filter(log=>{
-            return log.date>=startDate&&log.date<toDate;
+        project.logs = project.logs && project.logs.filter(log => {
+            return log.date >= startDate && log.date < toDate;
         })
 
-        project.logs.forEach(log=>{
-            log.text= md.render(log.text)
+        project.logs.forEach(log => {
+            log.text = md.render(log.text)
         })
-        
+
     })
 
     res.render('job/week', {
@@ -58,6 +60,37 @@ router.all('/week', (req, res) => {
         }
     })
 })
+
+router.all('/week-text', (req, res) => {
+    var weekProjects = [];
+    var now = new Date();
+    var startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 1);
+    var toDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay() + 8);
+    for (let i in projects) {
+        if (projects[i].editDate >= startDate && projects[i].editDate < toDate) {
+            weekProjects.push(projects[i])
+        }
+    }
+
+    weekProjects.forEach(project => {
+        project.logs = project.logs && project.logs.filter(log => {
+            return log.date >= startDate && log.date < toDate;
+        })
+
+        project.logs.forEach(log => {
+            log.text = log.text.trim();
+        })
+
+    })
+
+    res.render('job/week-text', {
+        data: {
+            jobs: weekProjects
+        }
+    })
+})
+
+
 
 
 router.all('/reload', async (req, res) => {
